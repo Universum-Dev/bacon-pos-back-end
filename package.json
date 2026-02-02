@@ -1,0 +1,35 @@
+{
+  "name": "bacon-pos-back-end",
+  "version": "0.0.1",
+  "description": "Bacon POS local back end. By Universum LLC",
+  "license": "MIT",
+  "author": "MAURICIO CANO GIRALDO",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/index.js",
+    "dev": "nodemon source/index.ts",
+    "start:prod": "sudo npm run build && NODE_ENV=production forever --minUptime 1000 --spinSleepTime 1000 -c 'nodemon --exitcrash --max-old-space-size=16576' dist/index.js"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mongoose": "^9.1.4"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/crypto-js": "^4.2.2",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.0.9",
+    "eslint": "^9.39.2",
+    "nodemon": "^3.1.11",
+    "prettier": "^3.8.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
