@@ -12,7 +12,9 @@ appRouter.get("/health-check", (req: Request, res: Response) =>
 );
 
 appRouter.post("/ping", async (req: Request, res: Response) => {
+  console.log("--- CONNECTION STARTED ---");
   const { cipherText, iv } = req.body;
+  console.log({ cipherText, iv });
 
   try {
     const key = CryptoJS.SHA256(config.server.secret || "");
