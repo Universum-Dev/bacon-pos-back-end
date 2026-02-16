@@ -20,8 +20,6 @@ export const checkDataExpiration = (
 
   const secondsDifference = Math.floor(differenceTimestamp / 1000);
 
-  console.log(timeToCheck, daysDifference, hoursDifference, minutesDifference);
-
   if (
     timeToCheck === "one-hour" &&
     daysDifference === 0 &&

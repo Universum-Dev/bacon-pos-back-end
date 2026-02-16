@@ -1,1 +1,5 @@
-export { Account } from "./account.model.db";
+export { PinPad } from './pinpad.model.db'
+export { Account } from './account.model.db'
+export { Printer } from './printer.model.db'
+export { Setting } from './setting.model.db'
+export { Employee } from './employee.model.db'
