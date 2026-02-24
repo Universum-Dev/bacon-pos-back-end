@@ -2,6 +2,16 @@ import { Types } from 'mongoose'
 
 import { Account, Employee, Printer, PinPad, Setting } from './models'
 
+export const getAccountsData = async () => {
+  try {
+    const accountData = await Account.find({}).lean().exec()
+    return accountData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export const getAccountData = async (queryToSearch: object) => {
   try {
     const accountData = await Account.findOne(queryToSearch).lean().exec()
