@@ -1,6 +1,22 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import { getAccountData, getAccountsData, getEmployeeData, getPinPadData, getPrinterData, getSettingsData, saveAccountData, saveEmployeeData, savePinPadData, savePrinterData, saveSettingsData } from '../db/requests.db'
+import {
+  getPinPadData,
+  getAccountData,
+  getPinPadsData,
+  getPrinterData,
+  savePinPadData,
+  getPrintersData,
+  getSettingsData,
+  getAccountsData,
+  getEmployeeData,
+  saveAccountData,
+  savePrinterData,
+  saveEmployeeData,
+  saveSettingsData,
+  getEmployeesData,
+  getSettingsDataBySearch
+} from '../db/requests.db'
 
 export const handleFirstSync = async (decryptedData: any) => {
   try {
@@ -12,19 +28,26 @@ export const handleFirstSync = async (decryptedData: any) => {
       }
 
       if (!currentAccountData) {
+        const accountOwnerDataParsed = JSON.parse(decryptedData.accountData.owner)
         const accountAddressDataParsed = JSON.parse(decryptedData.accountData.address)
 
         const accountDataToSet = {
           publicId: uuidv4(),
           createdAt: new Date(),
           updatedAt: new Date(),
-          city: accountAddressDataParsed.city,
+          owner: {
+            name: accountOwnerDataParsed.name,
+            email: accountOwnerDataParsed.email
+          },
           name: decryptedData.accountData.name,
-          phone: accountAddressDataParsed.phone,
           email: decryptedData.accountData.email,
-          street: accountAddressDataParsed.street,
-          zipCode: accountAddressDataParsed.zipCode,
           DBAName: decryptedData.accountData.DBAName,
+          address: {
+            city: accountAddressDataParsed.city,
+            phone: accountAddressDataParsed.phone,
+            street: accountAddressDataParsed.street,
+            zipCode: accountAddressDataParsed.zipCode
+          },
           industry: decryptedData.accountData.industry,
           profileImage: decryptedData.accountData.profileImage,
           UMerchantNumber: decryptedData.accountData.UMerchantNumber
@@ -33,7 +56,7 @@ export const handleFirstSync = async (decryptedData: any) => {
         await saveAccountData(accountDataToSet)
       }
 
-      const currentSettingsData = await getSettingsData({ terminalId: decryptedData.settingsData.id })
+      const currentSettingsData = await getSettingsDataBySearch({ terminalId: decryptedData.settingsData.id })
 
       if (!currentSettingsData) {
         const settingsDataToSet = {
@@ -63,6 +86,7 @@ export const handleFirstSync = async (decryptedData: any) => {
           role: (employeeData as any).role,
           email: (employeeData as any).email,
           phone: (employeeData as any).phone,
+          status: (employeeData as any).status,
           avatar: (employeeData as any).avatar,
           address: (employeeData as any).address,
           lastName: (employeeData as any).lastName,
@@ -134,16 +158,22 @@ export const handleFirstSync = async (decryptedData: any) => {
     }
 
     if (decryptedData.initialSystemSetup === 'additional') {
-      const accountsDataCreated = await getAccountsData()
+      const [accountsDataCreated] = await getAccountsData()
 
-      if (accountsDataCreated.length === 0) {
+      if (!accountsDataCreated) {
         return { success: false, message: 'No account data found. Please complete the initial system setup first.' }
       }
 
+      const pinPadsData = await getPinPadsData()
+      const printersData = await getPrintersData()
+      const employeesData = await getEmployeesData()
+      const currentSettingsData = await getSettingsData()
+
       console.log('Additional system setup completed. Updating settings data if needed.')
+      return { success: true, data: { pinPadsData, printersData, employeesData, accountData: accountsDataCreated, settingsData: currentSettingsData } }
     }
 
-    return { success: true }
+    return { success: true, data: null }
   } catch (error) {
     console.log(error)
     throw error

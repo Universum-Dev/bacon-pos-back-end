@@ -4,6 +4,7 @@ const EmployeeSchema = new Schema({
   role: { type: String },
   email: { type: String },
   phone: { type: String },
+  status: { type: String },
   avatar: { type: String },
   hireDate: { type: Date },
   address: { type: String },

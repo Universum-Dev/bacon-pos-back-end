@@ -27,10 +27,10 @@ export const SyncController = {
       const dataIsNotExpired = checkDataExpiration(decryptedData.timestampOfData, 'two-minutes')
 
       if (dataIsNotExpired) {
-        const { success, message } = await handleFirstSync(decryptedData)
+        const { success, data, message } = await handleFirstSync(decryptedData)
 
         if (success) {
-          return res.status(200).send({ message: true })
+          return res.status(200).send({ data, message: true })
         }
 
         return res.status(400).send({ message })

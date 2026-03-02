@@ -12,6 +12,36 @@ export const getAccountsData = async () => {
   }
 }
 
+export const getPinPadsData = async () => {
+  try {
+    const pinPadsData = await PinPad.find({}).lean().exec()
+    return pinPadsData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const getPrintersData = async () => {
+  try {
+    const printersData = await Printer.find({}).lean().exec()
+    return printersData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const getEmployeesData = async () => {
+  try {
+    const employeesData = await Employee.find({}).lean().exec()
+    return employeesData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export const getAccountData = async (queryToSearch: object) => {
   try {
     const accountData = await Account.findOne(queryToSearch).lean().exec()
@@ -22,9 +52,19 @@ export const getAccountData = async (queryToSearch: object) => {
   }
 }
 
-export const getSettingsData = async (queryToSearch: object) => {
+export const getSettingsDataBySearch = async (queryToSearch: object) => {
   try {
     const settingsData = await Setting.findOne(queryToSearch).lean().exec()
+    return settingsData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const getSettingsData = async () => {
+  try {
+    const settingsData = await Setting.find({}).lean().exec()
     return settingsData
   } catch (error) {
     console.log(error)
