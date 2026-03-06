@@ -1,6 +1,6 @@
 import { Types } from 'mongoose'
 
-import { Account, Employee, Printer, PinPad, Setting } from './models'
+import { Account, Employee, Printer, PinPad, Setting, Category } from './models'
 
 export const getAccountsData = async () => {
   try {
@@ -72,6 +72,16 @@ export const getSettingsData = async () => {
   }
 }
 
+export const getCategoriesData = async () => {
+  try {
+    const categoriesData = await Category.find({}).lean().exec()
+    return categoriesData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export const getPinPadData = async (queryToSearch: object) => {
   try {
     const pinPadData = await PinPad.findOne(queryToSearch).lean().exec()
@@ -99,6 +109,17 @@ export const getEmployeeData = async (queryToSearch: object) => {
   } catch (error) {
     console.log(error)
     throw error
+  }
+}
+
+export const saveCategoryData = async (categoryDataToSave: object) => {
+  try {
+    const newCategoryData = new Category({ _id: new Types.ObjectId(), ...categoryDataToSave })
+    const createdCategory = await newCategoryData.save()
+    return createdCategory.toObject()
+  } catch (error) {
+    console.log(error)
+    throw new Error(error as string)
   }
 }
 
@@ -154,5 +175,16 @@ export const savePinPadData = async (pinPadDataToSave: object) => {
   } catch (error) {
     console.log(error)
     throw new Error(error as string)
+  }
+}
+
+export const updateCategoryData = async (categoryWmDbId: string, dataToUpdate: object) => {
+  try {
+    const categoryDataUpdated = await Category.findOneAndUpdate({ wmDbId: categoryWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
+
+    return categoryDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
   }
 }

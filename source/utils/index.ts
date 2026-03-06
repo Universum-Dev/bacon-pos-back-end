@@ -1,1 +1,2 @@
-export { checkDataExpiration } from "./common.utils";
+export { checkDataExpiration } from './common.utils'
+export { handleGetDataDecrypted } from './encryption.utils'
