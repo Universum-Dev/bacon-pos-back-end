@@ -16,6 +16,7 @@ import {
   saveSettingsData,
   getEmployeesData,
   getCategoriesData,
+  getPrepStationsData,
   getSettingsDataBySearch
 } from '../db/requests.db'
 
@@ -170,9 +171,10 @@ export const handleFirstSync = async (decryptedData: any) => {
       const employeesData = await getEmployeesData()
       const categoriesData = await getCategoriesData()
       const currentSettingsData = await getSettingsData()
+      const prepStationsData = await getPrepStationsData()
 
       console.log('Additional system setup completed. Updating settings data if needed.')
-      return { success: true, data: { pinPadsData, printersData, employeesData, categoriesData, accountData: accountsDataCreated, settingsData: currentSettingsData } }
+      return { success: true, data: { pinPadsData, printersData, employeesData, categoriesData, prepStationsData, accountData: accountsDataCreated, settingsData: currentSettingsData } }
     }
 
     return { success: true, data: null }

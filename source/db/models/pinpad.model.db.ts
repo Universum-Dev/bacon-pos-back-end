@@ -11,6 +11,7 @@ const PinPadSchema = new Schema({
   tipOptions: Schema.Types.Mixed,
   enableTipping: { type: Boolean },
   tippingTypesEnabled: Schema.Types.Mixed,
+  deleted: { type: Boolean, default: false },
   createdAt: { type: Date, default: new Date() },
   updatedAt: { type: Date, default: new Date() }
 })

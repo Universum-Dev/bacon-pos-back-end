@@ -25,7 +25,7 @@ export const ItemsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const categoryWmDbId = decryptedData.categoryData.wmDbId
-      await updateCategoryData(categoryWmDbId, { ...decryptedData.categoryData })
+      await updateCategoryData(categoryWmDbId, { ...decryptedData.categoryData, updatedAt: new Date() })
 
       return res.status(200).send({ success: true })
     } catch (error) {

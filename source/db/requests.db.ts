@@ -1,6 +1,6 @@
 import { Types } from 'mongoose'
 
-import { Account, Employee, Printer, PinPad, Setting, Category } from './models'
+import { Account, Employee, Printer, PinPad, Setting, Category, PrepStation } from './models'
 
 export const getAccountsData = async () => {
   try {
@@ -76,6 +76,16 @@ export const getCategoriesData = async () => {
   try {
     const categoriesData = await Category.find({}).lean().exec()
     return categoriesData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const getPrepStationsData = async () => {
+  try {
+    const prepStationsData = await PrepStation.find({}).lean().exec()
+    return prepStationsData
   } catch (error) {
     console.log(error)
     throw error
@@ -178,11 +188,33 @@ export const savePinPadData = async (pinPadDataToSave: object) => {
   }
 }
 
+export const savePrepStationData = async (prepStationDataToSave: object) => {
+  try {
+    const newPrepStationData = new PrepStation({ _id: new Types.ObjectId(), ...prepStationDataToSave })
+    const createdPrepStation = await newPrepStationData.save()
+    return createdPrepStation.toObject()
+  } catch (error) {
+    console.log(error)
+    throw new Error(error as string)
+  }
+}
+
 export const updateCategoryData = async (categoryWmDbId: string, dataToUpdate: object) => {
   try {
     const categoryDataUpdated = await Category.findOneAndUpdate({ wmDbId: categoryWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
 
     return categoryDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const updatePrepStationData = async (prepStationWmDbId: string, dataToUpdate: object) => {
+  try {
+    const prepStationDataUpdated = await PrepStation.findOneAndUpdate({ wmDbId: prepStationWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
+
+    return prepStationDataUpdated
   } catch (error) {
     console.log(error)
     throw error
