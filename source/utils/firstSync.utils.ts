@@ -6,6 +6,7 @@ import {
   getPinPadsData,
   getPrinterData,
   savePinPadData,
+  getModeSetsData,
   getPrintersData,
   getSettingsData,
   getAccountsData,
@@ -168,13 +169,14 @@ export const handleFirstSync = async (decryptedData: any) => {
 
       const pinPadsData = await getPinPadsData()
       const printersData = await getPrintersData()
+      const modeSetsData = await getModeSetsData()
       const employeesData = await getEmployeesData()
       const categoriesData = await getCategoriesData()
       const currentSettingsData = await getSettingsData()
       const prepStationsData = await getPrepStationsData()
 
       console.log('Additional system setup completed. Updating settings data if needed.')
-      return { success: true, data: { pinPadsData, printersData, employeesData, categoriesData, prepStationsData, accountData: accountsDataCreated, settingsData: currentSettingsData } }
+      return { success: true, data: { pinPadsData, printersData, employeesData, categoriesData, prepStationsData, modeSetsData, accountData: accountsDataCreated, settingsData: currentSettingsData } }
     }
 
     return { success: true, data: null }

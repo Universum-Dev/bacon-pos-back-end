@@ -1,6 +1,6 @@
 import { Types } from 'mongoose'
 
-import { Account, Employee, Printer, PinPad, Setting, Category, PrepStation } from './models'
+import { Account, ModeSet, Employee, Printer, PinPad, Setting, Category, PrepStation, AddOnSet } from './models'
 
 export const getAccountsData = async () => {
   try {
@@ -82,6 +82,26 @@ export const getCategoriesData = async () => {
   }
 }
 
+export const getModeSetsData = async () => {
+  try {
+    const modeSetsData = await ModeSet.find({}).lean().exec()
+    return modeSetsData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const getAddOnSetsData = async () => {
+  try {
+    const addOnSetsData = await AddOnSet.find({}).lean().exec()
+    return addOnSetsData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export const getPrepStationsData = async () => {
   try {
     const prepStationsData = await PrepStation.find({}).lean().exec()
@@ -127,6 +147,28 @@ export const saveCategoryData = async (categoryDataToSave: object) => {
     const newCategoryData = new Category({ _id: new Types.ObjectId(), ...categoryDataToSave })
     const createdCategory = await newCategoryData.save()
     return createdCategory.toObject()
+  } catch (error) {
+    console.log(error)
+    throw new Error(error as string)
+  }
+}
+
+export const saveModeSetData = async (modeSetDataToSave: object) => {
+  try {
+    const newModeSetData = new ModeSet({ _id: new Types.ObjectId(), ...modeSetDataToSave })
+    const createdModeSet = await newModeSetData.save()
+    return createdModeSet.toObject()
+  } catch (error) {
+    console.log(error)
+    throw new Error(error as string)
+  }
+}
+
+export const saveAddOnSetData = async (addOnSetDataToSave: object) => {
+  try {
+    const newAddOnSetData = new AddOnSet({ _id: new Types.ObjectId(), ...addOnSetDataToSave })
+    const createdAddOnSet = await newAddOnSetData.save()
+    return createdAddOnSet.toObject()
   } catch (error) {
     console.log(error)
     throw new Error(error as string)
@@ -204,6 +246,28 @@ export const updateCategoryData = async (categoryWmDbId: string, dataToUpdate: o
     const categoryDataUpdated = await Category.findOneAndUpdate({ wmDbId: categoryWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
 
     return categoryDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const updateModeSetData = async (modeSetWmDbId: string, dataToUpdate: object) => {
+  try {
+    const modeSetDataUpdated = await ModeSet.findOneAndUpdate({ wmDbId: modeSetWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
+
+    return modeSetDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const updateAddOnSetData = async (addOnSetWmDbId: string, dataToUpdate: object) => {
+  try {
+    const addOnSetDataUpdated = await AddOnSet.findOneAndUpdate({ wmDbId: addOnSetWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
+
+    return addOnSetDataUpdated
   } catch (error) {
     console.log(error)
     throw error
