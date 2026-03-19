@@ -1,6 +1,6 @@
 import { Types } from 'mongoose'
 
-import { Account, ModeSet, Employee, Printer, PinPad, Setting, Category, PrepStation, AddOnSet } from './models'
+import { Account, ModeSet, Employee, Printer, PinPad, Setting, Category, PrepStation, AddOnSet, Item } from './models'
 
 export const getAccountsData = async () => {
   try {
@@ -102,6 +102,16 @@ export const getAddOnSetsData = async () => {
   }
 }
 
+export const getItemsData = async () => {
+  try {
+    const itemsData = await Item.find({}).lean().exec()
+    return itemsData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export const getPrepStationsData = async () => {
   try {
     const prepStationsData = await PrepStation.find({}).lean().exec()
@@ -169,6 +179,17 @@ export const saveAddOnSetData = async (addOnSetDataToSave: object) => {
     const newAddOnSetData = new AddOnSet({ _id: new Types.ObjectId(), ...addOnSetDataToSave })
     const createdAddOnSet = await newAddOnSetData.save()
     return createdAddOnSet.toObject()
+  } catch (error) {
+    console.log(error)
+    throw new Error(error as string)
+  }
+}
+
+export const saveItemData = async (itemDataToSave: object) => {
+  try {
+    const newItemData = new Item({ _id: new Types.ObjectId(), ...itemDataToSave })
+    const createdItem = await newItemData.save()
+    return createdItem.toObject()
   } catch (error) {
     console.log(error)
     throw new Error(error as string)
@@ -268,6 +289,17 @@ export const updateAddOnSetData = async (addOnSetWmDbId: string, dataToUpdate: o
     const addOnSetDataUpdated = await AddOnSet.findOneAndUpdate({ wmDbId: addOnSetWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
 
     return addOnSetDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const updateItemData = async (itemWmDbId: string, dataToUpdate: object) => {
+  try {
+    const itemDataUpdated = await Item.findOneAndUpdate({ wmDbId: itemWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
+
+    return itemDataUpdated
   } catch (error) {
     console.log(error)
     throw error

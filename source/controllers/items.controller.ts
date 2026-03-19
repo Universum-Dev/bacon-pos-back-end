@@ -1,9 +1,53 @@
 import { Request, Response } from 'express'
 
 import { handleGetDataDecrypted } from '../utils'
-import { saveCategoryData, saveModeSetData, saveAddOnSetData, updateCategoryData, updateModeSetData, updateAddOnSetData } from '../db/requests.db'
+import { saveCategoryData, saveModeSetData, saveAddOnSetData, updateCategoryData, updateModeSetData, updateAddOnSetData, saveItemData, updateItemData } from '../db/requests.db'
 
 export const ItemsController = {
+  createItem: async (req: Request, res: Response) => {
+    console.log('--- CREATE ITEM ---')
+    const { cipherText, iv } = req.body
+
+    try {
+      const decryptedData = handleGetDataDecrypted(cipherText, iv)
+      await saveItemData({ ...decryptedData.itemData, UMerchantNumber: decryptedData.UMerchantNumber })
+
+      return res.status(200).send({ success: true })
+    } catch (error) {
+      console.log('Error createItem', error)
+      return res.status(500).send({ success: false, error })
+    }
+  },
+  updateItem: async (req: Request, res: Response) => {
+    console.log('--- UPDATE ITEM ---')
+    const { cipherText, iv } = req.body
+
+    try {
+      const decryptedData = handleGetDataDecrypted(cipherText, iv)
+      const itemWmDbId = decryptedData.itemData.wmDbId
+      await updateItemData(itemWmDbId, { ...decryptedData.itemData, updatedAt: new Date() })
+
+      return res.status(200).send({ success: true })
+    } catch (error) {
+      console.log('Error updateItem', error)
+      return res.status(500).send({ success: false, error })
+    }
+  },
+  deleteItem: async (req: Request, res: Response) => {
+    console.log('--- DELETE ITEM ---')
+    const { cipherText, iv } = req.body
+
+    try {
+      const decryptedData = handleGetDataDecrypted(cipherText, iv)
+      const itemWmDbId = decryptedData.itemData.wmDbId
+      await updateItemData(itemWmDbId, { deleted: true })
+
+      return res.status(200).send({ success: true })
+    } catch (error) {
+      console.log('Error deleteItem', error)
+      return res.status(500).send({ success: false, error })
+    }
+  },
   createAddOnSet: async (req: Request, res: Response) => {
     console.log('--- CREATE ADD ON SET ---')
     const { cipherText, iv } = req.body

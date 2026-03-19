@@ -1,3 +1,4 @@
+export { Item } from './item.model.db'
 export { ModeSet } from './modeset.model'
 export { PinPad } from './pinpad.model.db'
 export { Account } from './account.model.db'

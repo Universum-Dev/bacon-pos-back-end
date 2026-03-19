@@ -4,6 +4,9 @@ import { ItemsController } from '../controllers/items.controller'
 
 const itemsRoute = Router()
 
+itemsRoute.post('/create-item', ItemsController.createItem)
+itemsRoute.post('/update-item', ItemsController.updateItem)
+itemsRoute.post('/delete-item', ItemsController.deleteItem)
 itemsRoute.post('/create-mode-set', ItemsController.createModeSet)
 itemsRoute.post('/update-mode-set', ItemsController.updateModeSet)
 itemsRoute.post('/delete-mode-set', ItemsController.deleteModeSet)
