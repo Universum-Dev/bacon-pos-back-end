@@ -19,7 +19,8 @@ import {
   getCategoriesData,
   getPrepStationsData,
   getSettingsDataBySearch,
-  getAddOnSetsData
+  getAddOnSetsData,
+  getItemsData
 } from '../db/requests.db'
 
 export const handleFirstSync = async (decryptedData: any) => {
@@ -168,6 +169,7 @@ export const handleFirstSync = async (decryptedData: any) => {
         return { success: false, message: 'No account data found. Please complete the initial system setup first.' }
       }
 
+      const itemsData = await getItemsData()
       const pinPadsData = await getPinPadsData()
       const printersData = await getPrintersData()
       const modeSetsData = await getModeSetsData()
@@ -178,7 +180,10 @@ export const handleFirstSync = async (decryptedData: any) => {
       const prepStationsData = await getPrepStationsData()
 
       console.log('Additional system setup completed. Updating settings data if needed.')
-      return { success: true, data: { pinPadsData, printersData, addOnSetsData, employeesData, categoriesData, prepStationsData, modeSetsData, accountData: accountsDataCreated, settingsData: currentSettingsData } }
+      return {
+        success: true,
+        data: { itemsData, pinPadsData, printersData, addOnSetsData, employeesData, categoriesData, prepStationsData, modeSetsData, accountData: accountsDataCreated, settingsData: currentSettingsData }
+      }
     }
 
     return { success: true, data: null }

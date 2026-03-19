@@ -11,6 +11,7 @@ const ItemSchema = new Schema({
   prepStationId: { type: String },
   UMerchantNumber: { type: String },
   taxes: { type: Array, default: [] },
+  deleted: { type: Boolean, default: false },
   isCombo: { type: Boolean, default: false },
   selectedMods: { type: Array, default: [] },
   possibleMods: { type: Array, default: [] },

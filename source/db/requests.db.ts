@@ -74,7 +74,7 @@ export const getSettingsData = async () => {
 
 export const getCategoriesData = async () => {
   try {
-    const categoriesData = await Category.find({}).lean().exec()
+    const categoriesData = await Category.find({ deleted: false }).lean().exec()
     return categoriesData
   } catch (error) {
     console.log(error)
@@ -84,7 +84,7 @@ export const getCategoriesData = async () => {
 
 export const getModeSetsData = async () => {
   try {
-    const modeSetsData = await ModeSet.find({}).lean().exec()
+    const modeSetsData = await ModeSet.find({ deleted: false }).lean().exec()
     return modeSetsData
   } catch (error) {
     console.log(error)
@@ -94,7 +94,7 @@ export const getModeSetsData = async () => {
 
 export const getAddOnSetsData = async () => {
   try {
-    const addOnSetsData = await AddOnSet.find({}).lean().exec()
+    const addOnSetsData = await AddOnSet.find({ deleted: false }).lean().exec()
     return addOnSetsData
   } catch (error) {
     console.log(error)
@@ -104,7 +104,7 @@ export const getAddOnSetsData = async () => {
 
 export const getItemsData = async () => {
   try {
-    const itemsData = await Item.find({}).lean().exec()
+    const itemsData = await Item.find({ deleted: false }).lean().exec()
     return itemsData
   } catch (error) {
     console.log(error)
@@ -114,7 +114,7 @@ export const getItemsData = async () => {
 
 export const getPrepStationsData = async () => {
   try {
-    const prepStationsData = await PrepStation.find({}).lean().exec()
+    const prepStationsData = await PrepStation.find({ deleted: false }).lean().exec()
     return prepStationsData
   } catch (error) {
     console.log(error)
