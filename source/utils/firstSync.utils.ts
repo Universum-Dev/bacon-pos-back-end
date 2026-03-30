@@ -78,7 +78,7 @@ export const handleFirstSync = async (decryptedData: any) => {
       }
 
       for (const employeeData of decryptedData.employeesData) {
-        const employeeDataInDb = await getEmployeeData({ role: (employeeData as any).role, accessCode: (employeeData as any).accessCode, terminalId: decryptedData.settingsData.id })
+        const employeeDataInDb = await getEmployeeData({ role: (employeeData as any).role, accessCode: (employeeData as any).accessCode })
 
         if (employeeDataInDb) {
           continue
@@ -93,13 +93,14 @@ export const handleFirstSync = async (decryptedData: any) => {
           phone: (employeeData as any).phone,
           status: (employeeData as any).status,
           avatar: (employeeData as any).avatar,
+          wmDbId: (employeeData as any).wmDbId,
           address: (employeeData as any).address,
           lastName: (employeeData as any).lastName,
-          terminalId: decryptedData.settingsData.id,
           firstName: (employeeData as any).firstName,
           accessCode: (employeeData as any).accessCode,
           hireDate: new Date((employeeData as any).hireDate),
-          birthDate: new Date((employeeData as any).birthDate)
+          birthDate: new Date((employeeData as any).birthDate),
+          UMerchantNumber: (employeeData as any).UMerchantNumber
         }
 
         await saveEmployeeData(employeeDataToSet)

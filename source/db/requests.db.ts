@@ -34,7 +34,7 @@ export const getPrintersData = async () => {
 
 export const getEmployeesData = async () => {
   try {
-    const employeesData = await Employee.find({}).lean().exec()
+    const employeesData = await Employee.find({ deleted: false }).lean().exec()
     return employeesData
   } catch (error) {
     console.log(error)
@@ -56,6 +56,19 @@ export const getSettingsDataBySearch = async (queryToSearch: object) => {
   try {
     const settingsData = await Setting.findOne(queryToSearch).lean().exec()
     return settingsData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const updateAccountData = async (accountId: string, dataToUpdate: object) => {
+  try {
+    const accountDataUpdated = await Account.findOneAndUpdate({ _id: new Types.ObjectId(accountId) }, { $set: dataToUpdate }, { new: true })
+      .lean()
+      .exec()
+
+    return accountDataUpdated
   } catch (error) {
     console.log(error)
     throw error
@@ -300,6 +313,17 @@ export const updateItemData = async (itemWmDbId: string, dataToUpdate: object) =
     const itemDataUpdated = await Item.findOneAndUpdate({ wmDbId: itemWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
 
     return itemDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const updateEmployeeData = async (employeeId: string, dataToUpdate: object) => {
+  try {
+    const employeeDataUpdated = await Employee.findOneAndUpdate({ wmDbId: employeeId }, { $set: dataToUpdate }, { new: true }).lean().exec()
+
+    return employeeDataUpdated
   } catch (error) {
     console.log(error)
     throw error

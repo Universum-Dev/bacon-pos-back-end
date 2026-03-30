@@ -4,6 +4,7 @@ const EmployeeSchema = new Schema({
   role: { type: String },
   email: { type: String },
   phone: { type: String },
+  wmDbId: { type: String },
   status: { type: String },
   avatar: { type: String },
   hireDate: { type: Date },
@@ -13,7 +14,9 @@ const EmployeeSchema = new Schema({
   lastName: { type: String },
   firstName: { type: String },
   accessCode: { type: String },
-  terminalId: { type: String },
+  UMerchantNumber: { type: String },
+  permissions: { type: Array, default: [] },
+  deleted: { type: Boolean, default: false },
   createdAt: { type: Date, default: new Date() },
   updatedAt: { type: Date, default: new Date() }
 })

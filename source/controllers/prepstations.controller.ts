@@ -44,7 +44,7 @@ export const PrepStationsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const prepStationWmDbId = decryptedData.prepStationData.wmDbId
-      await updatePrepStationData(prepStationWmDbId, { deleted: true })
+      await updatePrepStationData(prepStationWmDbId, { deleted: true, updatedAt: new Date() })
 
       return res.status(200).send({ success: true })
     } catch (error) {

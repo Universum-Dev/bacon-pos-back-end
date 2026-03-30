@@ -40,7 +40,7 @@ export const ItemsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const itemWmDbId = decryptedData.itemData.wmDbId
-      await updateItemData(itemWmDbId, { deleted: true })
+      await updateItemData(itemWmDbId, { deleted: true, updatedAt: new Date() })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -84,7 +84,7 @@ export const ItemsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const addOnSetWmDbId = decryptedData.addOnSetData.wmDbId
-      await updateAddOnSetData(addOnSetWmDbId, { deleted: true })
+      await updateAddOnSetData(addOnSetWmDbId, { deleted: true, updatedAt: new Date() })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -128,7 +128,7 @@ export const ItemsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const modeSetWmDbId = decryptedData.modeSetData.wmDbId
-      await updateModeSetData(modeSetWmDbId, { deleted: true })
+      await updateModeSetData(modeSetWmDbId, { deleted: true, updatedAt: new Date() })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -172,7 +172,7 @@ export const ItemsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const categoryWmDbId = decryptedData.categoryData.wmDbId
-      await updateCategoryData(categoryWmDbId, { deleted: true })
+      await updateCategoryData(categoryWmDbId, { deleted: true, updatedAt: new Date() })
 
       return res.status(200).send({ success: true })
     } catch (error) {
