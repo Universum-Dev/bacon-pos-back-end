@@ -10,6 +10,7 @@ const PinPadSchema = new Schema({
   merchantKey: { type: String },
   tipOptions: Schema.Types.Mixed,
   enableTipping: { type: Boolean },
+  UMerchantNumber: { type: String },
   tippingTypesEnabled: Schema.Types.Mixed,
   deleted: { type: Boolean, default: false },
   createdAt: { type: Date, default: new Date() },

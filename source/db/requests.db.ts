@@ -1,6 +1,6 @@
 import { Types } from 'mongoose'
 
-import { Account, ModeSet, Employee, Printer, PinPad, Setting, Category, PrepStation, AddOnSet, Item } from './models'
+import { Account, ModeSet, Employee, Printer, PinPad, Setting, Category, PrepStation, AddOnSet, Item, ServiceArea, TableMap } from './models'
 
 export const getAccountsData = async () => {
   try {
@@ -119,6 +119,28 @@ export const getItemsData = async () => {
   try {
     const itemsData = await Item.find({ deleted: false }).lean().exec()
     return itemsData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const getServiceAreasData = async () => {
+  try {
+    const serviceAreasData = await ServiceArea.find({ deleted: false }).lean().exec()
+    return serviceAreasData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const getTableMapsData = async (queryToSearch: object) => {
+  try {
+    const tableMapsData = await TableMap.find({ ...queryToSearch })
+      .lean()
+      .exec()
+    return tableMapsData
   } catch (error) {
     console.log(error)
     throw error
@@ -264,6 +286,28 @@ export const savePinPadData = async (pinPadDataToSave: object) => {
   }
 }
 
+export const saveTableMapData = async (tableMapDataToSave: object) => {
+  try {
+    const newTableMapData = new TableMap({ _id: new Types.ObjectId(), ...tableMapDataToSave })
+    const createdTableMap = await newTableMapData.save()
+    return createdTableMap.toObject()
+  } catch (error) {
+    console.log(error)
+    throw new Error(error as string)
+  }
+}
+
+export const saveServiceAreaData = async (serviceAreaDataToSave: object) => {
+  try {
+    const newServiceAreaData = new ServiceArea({ _id: new Types.ObjectId(), ...serviceAreaDataToSave })
+    const createdServiceArea = await newServiceAreaData.save()
+    return createdServiceArea.toObject()
+  } catch (error) {
+    console.log(error)
+    throw new Error(error as string)
+  }
+}
+
 export const savePrepStationData = async (prepStationDataToSave: object) => {
   try {
     const newPrepStationData = new PrepStation({ _id: new Types.ObjectId(), ...prepStationDataToSave })
@@ -330,11 +374,44 @@ export const updateEmployeeData = async (employeeId: string, dataToUpdate: objec
   }
 }
 
+export const updatePrinterData = async (printerMac: string, dataToUpdate: object) => {
+  try {
+    const printerDataUpdated = await Printer.findOneAndUpdate({ mac: printerMac }, { $set: dataToUpdate }, { new: true }).lean().exec()
+
+    return printerDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export const updatePrepStationData = async (prepStationWmDbId: string, dataToUpdate: object) => {
   try {
     const prepStationDataUpdated = await PrepStation.findOneAndUpdate({ wmDbId: prepStationWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
 
     return prepStationDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const updateServiceAreaData = async (serviceAreaWmDbId: string, dataToUpdate: object) => {
+  try {
+    const serviceAreaDataUpdated = await ServiceArea.findOneAndUpdate({ wmDbId: serviceAreaWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
+
+    return serviceAreaDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const updateTableMapData = async (tableMapWmDbId: string, dataToUpdate: object) => {
+  try {
+    const tableMapDataUpdated = await TableMap.findOneAndUpdate({ wmDbId: tableMapWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
+
+    return tableMapDataUpdated
   } catch (error) {
     console.log(error)
     throw error

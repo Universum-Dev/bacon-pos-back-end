@@ -5,6 +5,7 @@ const SettingSchema = new Schema({
   publicId: { type: String },
   terminalId: { type: String },
   posInterface: { type: String },
+  UMerchantNumber: { type: String },
   isMainPOSTerminal: { type: Boolean },
   createdAt: { type: Date, default: new Date() },
   updatedAt: { type: Date, default: new Date() }

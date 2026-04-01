@@ -13,11 +13,13 @@ import {
   getEmployeeData,
   saveAccountData,
   savePrinterData,
+  getTableMapsData,
   saveEmployeeData,
   saveSettingsData,
   getEmployeesData,
   getCategoriesData,
   getPrepStationsData,
+  getServiceAreasData,
   getSettingsDataBySearch,
   getAddOnSetsData,
   getItemsData
@@ -26,6 +28,7 @@ import {
 export const handleFirstSync = async (decryptedData: any) => {
   try {
     if (!decryptedData.initialSystemSetup || (decryptedData.initialSystemSetup && decryptedData.initialSystemSetup === 'initial')) {
+      const UMerchantNumber = decryptedData.accountData.UMerchantNumber
       const currentAccountData = await getAccountData({ UMerchantNumber: decryptedData.accountData.UMerchantNumber })
 
       if (currentAccountData && currentAccountData.UMerchantNumber !== decryptedData.accountData.UMerchantNumber) {
@@ -65,6 +68,7 @@ export const handleFirstSync = async (decryptedData: any) => {
 
       if (!currentSettingsData) {
         const settingsDataToSet = {
+          UMerchantNumber,
           publicId: uuidv4(),
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -122,6 +126,7 @@ export const handleFirstSync = async (decryptedData: any) => {
         }
 
         const pinPadDataToSet = {
+          UMerchantNumber,
           publicId: uuidv4(),
           ip: pinPadData.ip,
           name: pinPadData.name,
@@ -149,6 +154,7 @@ export const handleFirstSync = async (decryptedData: any) => {
         }
 
         const printerDataToSet = {
+          UMerchantNumber,
           publicId: uuidv4(),
           ip: printerData.ip,
           mac: printerData.mac,
@@ -179,11 +185,26 @@ export const handleFirstSync = async (decryptedData: any) => {
       const categoriesData = await getCategoriesData()
       const currentSettingsData = await getSettingsData()
       const prepStationsData = await getPrepStationsData()
+      const serviceAreasData = await getServiceAreasData()
+      const tableMapsData = await getTableMapsData({ deleted: false })
 
       console.log('Additional system setup completed. Updating settings data if needed.')
       return {
         success: true,
-        data: { itemsData, pinPadsData, printersData, addOnSetsData, employeesData, categoriesData, prepStationsData, modeSetsData, accountData: accountsDataCreated, settingsData: currentSettingsData }
+        data: {
+          itemsData,
+          pinPadsData,
+          modeSetsData,
+          printersData,
+          tableMapsData,
+          addOnSetsData,
+          employeesData,
+          categoriesData,
+          prepStationsData,
+          serviceAreasData,
+          accountData: accountsDataCreated,
+          settingsData: currentSettingsData
+        }
       }
     }
 
