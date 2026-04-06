@@ -1,11 +1,14 @@
 import { v4 as uuidv4 } from 'uuid'
 
 import {
+  getItemsData,
+  getOrdersData,
   getPinPadData,
   getAccountData,
   getPinPadsData,
   getPrinterData,
   savePinPadData,
+  getPaymentsData,
   getModeSetsData,
   getPrintersData,
   getSettingsData,
@@ -13,6 +16,7 @@ import {
   getEmployeeData,
   saveAccountData,
   savePrinterData,
+  getAddOnSetsData,
   getTableMapsData,
   saveEmployeeData,
   saveSettingsData,
@@ -20,9 +24,8 @@ import {
   getCategoriesData,
   getPrepStationsData,
   getServiceAreasData,
-  getSettingsDataBySearch,
-  getAddOnSetsData,
-  getItemsData
+  getDiningOptionsData,
+  getSettingsDataBySearch
 } from '../db/requests.db'
 
 export const handleFirstSync = async (decryptedData: any) => {
@@ -177,15 +180,18 @@ export const handleFirstSync = async (decryptedData: any) => {
       }
 
       const itemsData = await getItemsData()
+      const ordersData = await getOrdersData()
       const pinPadsData = await getPinPadsData()
       const printersData = await getPrintersData()
       const modeSetsData = await getModeSetsData()
+      const paymentsData = await getPaymentsData()
       const employeesData = await getEmployeesData()
       const addOnSetsData = await getAddOnSetsData()
       const categoriesData = await getCategoriesData()
-      const currentSettingsData = await getSettingsData()
       const prepStationsData = await getPrepStationsData()
       const serviceAreasData = await getServiceAreasData()
+      const [currentSettingsData] = await getSettingsData()
+      const diningOptionsData = await getDiningOptionsData()
       const tableMapsData = await getTableMapsData({ deleted: false })
 
       console.log('Additional system setup completed. Updating settings data if needed.')
@@ -193,15 +199,18 @@ export const handleFirstSync = async (decryptedData: any) => {
         success: true,
         data: {
           itemsData,
+          ordersData,
           pinPadsData,
           modeSetsData,
           printersData,
+          paymentsData,
           tableMapsData,
           addOnSetsData,
           employeesData,
           categoriesData,
           prepStationsData,
           serviceAreasData,
+          diningOptionsData,
           accountData: accountsDataCreated,
           settingsData: currentSettingsData
         }

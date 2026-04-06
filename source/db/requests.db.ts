@@ -1,6 +1,6 @@
 import { Types } from 'mongoose'
 
-import { Account, ModeSet, Employee, Printer, PinPad, Setting, Category, PrepStation, AddOnSet, Item, ServiceArea, TableMap } from './models'
+import { Account, ModeSet, DiningOption, Order, Payment, Employee, Printer, PinPad, Setting, Category, PrepStation, AddOnSet, Item, ServiceArea, TableMap } from './models'
 
 export const getAccountsData = async () => {
   try {
@@ -32,10 +32,40 @@ export const getPrintersData = async () => {
   }
 }
 
+export const getPaymentsData = async () => {
+  try {
+    const paymentsData = await Payment.find({ deleted: false }).lean().exec()
+    return paymentsData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const getDiningOptionsData = async () => {
+  try {
+    const diningOptionsData = await DiningOption.find({ deleted: false }).lean().exec()
+    return diningOptionsData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export const getEmployeesData = async () => {
   try {
     const employeesData = await Employee.find({ deleted: false }).lean().exec()
     return employeesData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const getPaymentData = async (queryToSearch: object) => {
+  try {
+    const paymentData = await Payment.findOne(queryToSearch).lean().exec()
+    return paymentData
   } catch (error) {
     console.log(error)
     throw error
@@ -125,6 +155,16 @@ export const getItemsData = async () => {
   }
 }
 
+export const getOrdersData = async () => {
+  try {
+    const ordersData = await Order.find({ deleted: false }).lean().exec()
+    return ordersData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export const getServiceAreasData = async () => {
   try {
     const serviceAreasData = await ServiceArea.find({ deleted: false }).lean().exec()
@@ -192,6 +232,28 @@ export const saveCategoryData = async (categoryDataToSave: object) => {
     const newCategoryData = new Category({ _id: new Types.ObjectId(), ...categoryDataToSave })
     const createdCategory = await newCategoryData.save()
     return createdCategory.toObject()
+  } catch (error) {
+    console.log(error)
+    throw new Error(error as string)
+  }
+}
+
+export const savePaymentData = async (paymentDataToSave: object) => {
+  try {
+    const newPaymentData = new Payment({ _id: new Types.ObjectId(), ...paymentDataToSave })
+    const createdPayment = await newPaymentData.save()
+    return createdPayment.toObject()
+  } catch (error) {
+    console.log(error)
+    throw new Error(error as string)
+  }
+}
+
+export const saveOrderData = async (orderDataToSave: object) => {
+  try {
+    const newOrderData = new Order({ _id: new Types.ObjectId(), ...orderDataToSave })
+    const createdOrder = await newOrderData.save()
+    return createdOrder.toObject()
   } catch (error) {
     console.log(error)
     throw new Error(error as string)
@@ -286,6 +348,17 @@ export const savePinPadData = async (pinPadDataToSave: object) => {
   }
 }
 
+export const saveDiningOptionData = async (diningOptionDataToSave: object) => {
+  try {
+    const newDiningOptionData = new DiningOption({ _id: new Types.ObjectId(), ...diningOptionDataToSave })
+    const createdDiningOption = await newDiningOptionData.save()
+    return createdDiningOption.toObject()
+  } catch (error) {
+    console.log(error)
+    throw new Error(error as string)
+  }
+}
+
 export const saveTableMapData = async (tableMapDataToSave: object) => {
   try {
     const newTableMapData = new TableMap({ _id: new Types.ObjectId(), ...tableMapDataToSave })
@@ -374,6 +447,17 @@ export const updateEmployeeData = async (employeeId: string, dataToUpdate: objec
   }
 }
 
+export const updatePinPadData = async (pinPadIp: string, dataToUpdate: object) => {
+  try {
+    const pinPadDataUpdated = await PinPad.findOneAndUpdate({ ip: pinPadIp }, { $set: dataToUpdate }, { new: true }).lean().exec()
+
+    return pinPadDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export const updatePrinterData = async (printerMac: string, dataToUpdate: object) => {
   try {
     const printerDataUpdated = await Printer.findOneAndUpdate({ mac: printerMac }, { $set: dataToUpdate }, { new: true }).lean().exec()
@@ -396,6 +480,17 @@ export const updatePrepStationData = async (prepStationWmDbId: string, dataToUpd
   }
 }
 
+export const updateOrderData = async (orderWmDbId: string, dataToUpdate: object) => {
+  try {
+    const orderDataUpdated = await Order.findOneAndUpdate({ wmDbId: orderWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
+
+    return orderDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export const updateServiceAreaData = async (serviceAreaWmDbId: string, dataToUpdate: object) => {
   try {
     const serviceAreaDataUpdated = await ServiceArea.findOneAndUpdate({ wmDbId: serviceAreaWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
@@ -407,11 +502,43 @@ export const updateServiceAreaData = async (serviceAreaWmDbId: string, dataToUpd
   }
 }
 
+export const updateDiningOptionData = async (diningOptionWmDbId: string, dataToUpdate: object) => {
+  try {
+    const diningOptionDataUpdated = await DiningOption.findOneAndUpdate({ wmDbId: diningOptionWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
+
+    return diningOptionDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export const updateTableMapData = async (tableMapWmDbId: string, dataToUpdate: object) => {
   try {
     const tableMapDataUpdated = await TableMap.findOneAndUpdate({ wmDbId: tableMapWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
 
     return tableMapDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const updateSettingsData = async (UMerchantNumber: string, dataToUpdate: object) => {
+  try {
+    const settingsDataUpdated = await Setting.findOneAndUpdate({ UMerchantNumber }, { $set: dataToUpdate }, { new: true }).lean().exec()
+
+    return settingsDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const getOrderDataToSend = async (wmDbId: string) => {
+  try {
+    const orderData = await Order.findOne({ wmDbId }).lean().exec()
+    return orderData
   } catch (error) {
     console.log(error)
     throw error
