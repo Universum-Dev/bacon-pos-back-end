@@ -1,6 +1,6 @@
 import { Types } from 'mongoose'
 
-import { Account, ModeSet, DiningOption, Order, Payment, Employee, Printer, PinPad, Setting, Category, PrepStation, AddOnSet, Item, ServiceArea, TableMap } from './models'
+import { Tax, Discount, PromoCode, Account, ModeSet, ServiceCharge, DiningOption, Order, Payment, Employee, Printer, PinPad, Setting, Category, PrepStation, AddOnSet, Item, ServiceArea, TableMap } from './models'
 
 export const getAccountsData = async () => {
   try {
@@ -36,6 +36,46 @@ export const getPaymentsData = async () => {
   try {
     const paymentsData = await Payment.find({ deleted: false }).lean().exec()
     return paymentsData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const getServiceChargesData = async () => {
+  try {
+    const serviceChargesData = await ServiceCharge.find({ deleted: false }).lean().exec()
+    return serviceChargesData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const getPromoCodesData = async () => {
+  try {
+    const promoCodesData = await PromoCode.find({ deleted: false }).lean().exec()
+    return promoCodesData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const getDiscountsData = async () => {
+  try {
+    const discountsData = await Discount.find({ deleted: false }).lean().exec()
+    return discountsData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const getTaxesData = async () => {
+  try {
+    const taxesData = await Tax.find({ deleted: false }).lean().exec()
+    return taxesData
   } catch (error) {
     console.log(error)
     throw error
@@ -315,6 +355,50 @@ export const saveSettingsData = async (settingsDataToSave: object) => {
   }
 }
 
+export const saveServiceChargeData = async (serviceChargeDataToSave: object) => {
+  try {
+    const newServiceChargeData = new ServiceCharge({ _id: new Types.ObjectId(), ...serviceChargeDataToSave })
+    const createdServiceCharge = await newServiceChargeData.save()
+    return createdServiceCharge.toObject()
+  } catch (error) {
+    console.log(error)
+    throw new Error(error as string)
+  }
+}
+
+export const savePromoCodeData = async (promoCodeDataToSave: object) => {
+  try {
+    const newPromoCodeData = new PromoCode({ _id: new Types.ObjectId(), ...promoCodeDataToSave })
+    const createdPromoCode = await newPromoCodeData.save()
+    return createdPromoCode.toObject()
+  } catch (error) {
+    console.log(error)
+    throw new Error(error as string)
+  }
+}
+
+export const saveDiscountData = async (discountDataToSave: object) => {
+  try {
+    const newDiscountData = new Discount({ _id: new Types.ObjectId(), ...discountDataToSave })
+    const createdDiscount = await newDiscountData.save()
+    return createdDiscount.toObject()
+  } catch (error) {
+    console.log(error)
+    throw new Error(error as string)
+  }
+}
+
+export const saveTaxData = async (taxDataToSave: object) => {
+  try {
+    const newTaxData = new Tax({ _id: new Types.ObjectId(), ...taxDataToSave })
+    const createdTax = await newTaxData.save()
+    return createdTax.toObject()
+  } catch (error) {
+    console.log(error)
+    throw new Error(error as string)
+  }
+}
+
 export const saveEmployeeData = async (employeeDataToSave: object) => {
   try {
     const newEmployeeData = new Employee({ _id: new Types.ObjectId(), ...employeeDataToSave })
@@ -485,6 +569,50 @@ export const updateOrderData = async (orderWmDbId: string, dataToUpdate: object)
     const orderDataUpdated = await Order.findOneAndUpdate({ wmDbId: orderWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
 
     return orderDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const updateServiceChargeData = async (serviceChargeWmDbId: string, dataToUpdate: object) => {
+  try {
+    const serviceChargeDataUpdated = await ServiceCharge.findOneAndUpdate({ wmDbId: serviceChargeWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
+
+    return serviceChargeDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const updatePromoCodeData = async (promoCodeWmDbId: string, dataToUpdate: object) => {
+  try {
+    const promoCodeDataUpdated = await PromoCode.findOneAndUpdate({ wmDbId: promoCodeWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
+
+    return promoCodeDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const updateDiscountData = async (discountWmDbId: string, dataToUpdate: object) => {
+  try {
+    const discountDataUpdated = await Discount.findOneAndUpdate({ wmDbId: discountWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
+
+    return discountDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const updateTaxData = async (taxWmDbId: string, dataToUpdate: object) => {
+  try {
+    const taxDataUpdated = await Tax.findOneAndUpdate({ wmDbId: taxWmDbId }, { $set: dataToUpdate }, { new: true }).lean().exec()
+
+    return taxDataUpdated
   } catch (error) {
     console.log(error)
     throw error

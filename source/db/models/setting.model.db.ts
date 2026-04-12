@@ -7,6 +7,8 @@ const SettingSchema = new Schema({
   posInterface: { type: String },
   UMerchantNumber: { type: String },
   isMainPOSTerminal: { type: Boolean },
+  kitchenTicketConfig: { type: String },
+  customerTicketConfig: { type: String },
   createdAt: { type: Date, default: new Date() },
   updatedAt: { type: Date, default: new Date() }
 })

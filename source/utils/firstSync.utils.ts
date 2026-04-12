@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 
 import {
+  getTaxesData,
   getItemsData,
   getOrdersData,
   getPinPadData,
@@ -16,15 +17,18 @@ import {
   getEmployeeData,
   saveAccountData,
   savePrinterData,
+  getDiscountsData,
   getAddOnSetsData,
   getTableMapsData,
   saveEmployeeData,
   saveSettingsData,
   getEmployeesData,
+  getPromoCodesData,
   getCategoriesData,
   getPrepStationsData,
   getServiceAreasData,
   getDiningOptionsData,
+  getServiceChargesData,
   getSettingsDataBySearch
 } from '../db/requests.db'
 
@@ -180,37 +184,45 @@ export const handleFirstSync = async (decryptedData: any) => {
       }
 
       const itemsData = await getItemsData()
+      const taxesData = await getTaxesData()
       const ordersData = await getOrdersData()
       const pinPadsData = await getPinPadsData()
       const printersData = await getPrintersData()
       const modeSetsData = await getModeSetsData()
       const paymentsData = await getPaymentsData()
+      const discountsData = await getDiscountsData()
       const employeesData = await getEmployeesData()
       const addOnSetsData = await getAddOnSetsData()
       const categoriesData = await getCategoriesData()
+      const promoCodesData = await getPromoCodesData()
       const prepStationsData = await getPrepStationsData()
       const serviceAreasData = await getServiceAreasData()
       const [currentSettingsData] = await getSettingsData()
       const diningOptionsData = await getDiningOptionsData()
+      const serviceChargesData = await getServiceChargesData()
       const tableMapsData = await getTableMapsData({ deleted: false })
 
       console.log('Additional system setup completed. Updating settings data if needed.')
       return {
         success: true,
         data: {
+          taxesData,
           itemsData,
           ordersData,
           pinPadsData,
           modeSetsData,
           printersData,
           paymentsData,
+          discountsData,
           tableMapsData,
           addOnSetsData,
           employeesData,
           categoriesData,
+          promoCodesData,
           prepStationsData,
           serviceAreasData,
           diningOptionsData,
+          serviceChargesData,
           accountData: accountsDataCreated,
           settingsData: currentSettingsData
         }
