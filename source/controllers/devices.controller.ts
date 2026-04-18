@@ -14,11 +14,15 @@ export const DevicesController = {
       const currentPinPadData = await getPinPadData({ ip: pinPadData.ip, UMerchantNumber })
 
       if (currentPinPadData) {
-        await updatePinPadData(pinPadData.ip, { ...pinPadData, updatedAt: new Date() })
+        const pinPadDataUpdated = await updatePinPadData(pinPadData.ip, { ...pinPadData, updatedAt: new Date() })
+        req.io?.emit('pin_pad_updated', { pinPad: pinPadDataUpdated, UMerchantNumber })
+
         return res.status(200).send({ success: true })
       }
 
-      await savePinPadData({ ...pinPadData, UMerchantNumber })
+      const pinPadDataCreated = await savePinPadData({ ...pinPadData, UMerchantNumber })
+      req.io?.emit('pin_pad_updated', { pinPad: pinPadDataCreated, UMerchantNumber })
+
       return res.status(200).send({ success: true })
     } catch (error) {
       console.log('Error configurePinpad', error)
@@ -35,11 +39,15 @@ export const DevicesController = {
       const currentPrinterData = await getPrinterData({ mac: printerData.mac, UMerchantNumber })
 
       if (currentPrinterData) {
-        await updatePrinterData(printerData.mac, { ...printerData, updatedAt: new Date() })
+        const printerDataUpdated = await updatePrinterData(printerData.mac, { ...printerData, updatedAt: new Date() })
+        req.io?.emit('printer_updated', { printer: printerDataUpdated, UMerchantNumber })
+
         return res.status(200).send({ success: true })
       }
 
-      await savePrinterData({ ...printerData, UMerchantNumber })
+      const printerDataCreated = await savePrinterData({ ...printerData, UMerchantNumber })
+      req.io?.emit('printer_updated', { printer: printerDataCreated, UMerchantNumber })
+
       return res.status(200).send({ success: true })
     } catch (error) {
       console.log('Error configurePrinter', error)

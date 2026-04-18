@@ -10,10 +10,11 @@ export const TableMapsController = {
 
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
-      await saveTableMapData({
+      const tableMapCreated = await saveTableMapData({
         ...decryptedData.tableMapData,
         UMerchantNumber: decryptedData.UMerchantNumber
       })
+      req.io?.emit('table_map_updated', { tableMap: tableMapCreated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -28,7 +29,8 @@ export const TableMapsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const tableMapWmDbId = decryptedData.tableMapData.wmDbId
-      await updateTableMapData(tableMapWmDbId, { ...decryptedData.tableMapData, updatedAt: new Date() })
+      const tableMapUpdated = await updateTableMapData(tableMapWmDbId, { ...decryptedData.tableMapData, updatedAt: new Date() })
+      req.io?.emit('table_map_updated', { tableMap: tableMapUpdated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -44,7 +46,8 @@ export const TableMapsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const tableMapWmDbId = decryptedData.tableMapData.wmDbId
-      await updateTableMapData(tableMapWmDbId, { deleted: true, updatedAt: new Date() })
+      const tableMapDeleted = await updateTableMapData(tableMapWmDbId, { deleted: true, updatedAt: new Date() })
+      req.io?.emit('table_map_updated', { tableMap: tableMapDeleted, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {

@@ -10,10 +10,11 @@ export const DiningOptionsController = {
 
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
-      await saveDiningOptionData({
+      const diningOptionCreated = await saveDiningOptionData({
         ...decryptedData.diningOptionData,
         UMerchantNumber: decryptedData.UMerchantNumber
       })
+      req.io?.emit('dining_option_updated', { diningOption: diningOptionCreated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -28,7 +29,8 @@ export const DiningOptionsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const diningOptionWmDbId = decryptedData.diningOptionData.wmDbId
-      await updateDiningOptionData(diningOptionWmDbId, { ...decryptedData.diningOptionData, updatedAt: new Date() })
+      const diningOptionUpdated = await updateDiningOptionData(diningOptionWmDbId, { ...decryptedData.diningOptionData, updatedAt: new Date() })
+      req.io?.emit('dining_option_updated', { diningOption: diningOptionUpdated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -44,7 +46,8 @@ export const DiningOptionsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const diningOptionWmDbId = decryptedData.diningOptionData.wmDbId
-      await updateDiningOptionData(diningOptionWmDbId, { deleted: true, updatedAt: new Date() })
+      const diningOptionDeleted = await updateDiningOptionData(diningOptionWmDbId, { deleted: true, updatedAt: new Date() })
+      req.io?.emit('dining_option_updated', { diningOption: diningOptionDeleted, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {

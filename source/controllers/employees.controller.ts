@@ -10,7 +10,8 @@ export const EmployeesController = {
 
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
-      await saveEmployeeData({ ...decryptedData.employeeData, UMerchantNumber: decryptedData.UMerchantNumber })
+      const employeeCreated = await saveEmployeeData({ ...decryptedData.employeeData, UMerchantNumber: decryptedData.UMerchantNumber })
+      req.io?.emit('employee_updated', { employee: employeeCreated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -25,7 +26,8 @@ export const EmployeesController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const employeeId = decryptedData.employeeData.wmDbId
-      await updateEmployeeData(employeeId, { ...decryptedData.employeeData, updatedAt: new Date() })
+      const employeeUpdated = await updateEmployeeData(employeeId, { ...decryptedData.employeeData, updatedAt: new Date() })
+      req.io?.emit('employee_updated', { employee: employeeUpdated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -40,7 +42,8 @@ export const EmployeesController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const employeeId = decryptedData.employeeData.wmDbId
-      await updateEmployeeData(employeeId, { deleted: true, updatedAt: new Date() })
+      const employeeDeleted = await updateEmployeeData(employeeId, { deleted: true, updatedAt: new Date() })
+      req.io?.emit('employee_updated', { employee: employeeDeleted, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {

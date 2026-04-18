@@ -10,7 +10,8 @@ export const ItemsController = {
 
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
-      await saveItemData({ ...decryptedData.itemData, UMerchantNumber: decryptedData.UMerchantNumber })
+      const itemCreated = await saveItemData({ ...decryptedData.itemData, UMerchantNumber: decryptedData.UMerchantNumber })
+      req.io?.emit('item_updated', { item: itemCreated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -25,7 +26,8 @@ export const ItemsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const itemWmDbId = decryptedData.itemData.wmDbId
-      await updateItemData(itemWmDbId, { ...decryptedData.itemData, updatedAt: new Date() })
+      const itemUpdated = await updateItemData(itemWmDbId, { ...decryptedData.itemData, updatedAt: new Date() })
+      req.io?.emit('item_updated', { item: itemUpdated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -40,7 +42,8 @@ export const ItemsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const itemWmDbId = decryptedData.itemData.wmDbId
-      await updateItemData(itemWmDbId, { deleted: true, updatedAt: new Date() })
+      const itemDeleted = await updateItemData(itemWmDbId, { deleted: true, updatedAt: new Date() })
+      req.io?.emit('item_updated', { item: itemDeleted, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -54,7 +57,8 @@ export const ItemsController = {
 
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
-      await saveAddOnSetData({ ...decryptedData.addOnSetData, UMerchantNumber: decryptedData.UMerchantNumber })
+      const addOnSetCreated = await saveAddOnSetData({ ...decryptedData.addOnSetData, UMerchantNumber: decryptedData.UMerchantNumber })
+      req.io?.emit('add_on_set_updated', { addOnSet: addOnSetCreated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -69,7 +73,8 @@ export const ItemsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const addOnSetWmDbId = decryptedData.addOnSetData.wmDbId
-      await updateAddOnSetData(addOnSetWmDbId, { ...decryptedData.addOnSetData, updatedAt: new Date() })
+      const addOnSetUpdated = await updateAddOnSetData(addOnSetWmDbId, { ...decryptedData.addOnSetData, updatedAt: new Date() })
+      req.io?.emit('add_on_set_updated', { addOnSet: addOnSetUpdated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -84,7 +89,8 @@ export const ItemsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const addOnSetWmDbId = decryptedData.addOnSetData.wmDbId
-      await updateAddOnSetData(addOnSetWmDbId, { deleted: true, updatedAt: new Date() })
+      const addOnSetDeleted = await updateAddOnSetData(addOnSetWmDbId, { deleted: true, updatedAt: new Date() })
+      req.io?.emit('add_on_set_updated', { addOnSet: addOnSetDeleted, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -98,7 +104,8 @@ export const ItemsController = {
 
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
-      await saveModeSetData({ ...decryptedData.modeSetData, UMerchantNumber: decryptedData.UMerchantNumber })
+      const modeSetCreated = await saveModeSetData({ ...decryptedData.modeSetData, UMerchantNumber: decryptedData.UMerchantNumber })
+      req.io?.emit('mode_set_updated', { modeSet: modeSetCreated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -113,7 +120,8 @@ export const ItemsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const modeSetWmDbId = decryptedData.modeSetData.wmDbId
-      await updateModeSetData(modeSetWmDbId, { ...decryptedData.modeSetData, updatedAt: new Date() })
+      const modeSetUpdated = await updateModeSetData(modeSetWmDbId, { ...decryptedData.modeSetData, updatedAt: new Date() })
+      req.io?.emit('mode_set_updated', { modeSet: modeSetUpdated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -128,7 +136,8 @@ export const ItemsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const modeSetWmDbId = decryptedData.modeSetData.wmDbId
-      await updateModeSetData(modeSetWmDbId, { deleted: true, updatedAt: new Date() })
+      const modeSetDeleted = await updateModeSetData(modeSetWmDbId, { deleted: true, updatedAt: new Date() })
+      req.io?.emit('mode_set_updated', { modeSet: modeSetDeleted, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -142,7 +151,8 @@ export const ItemsController = {
 
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
-      await saveCategoryData({ ...decryptedData.categoryData, UMerchantNumber: decryptedData.UMerchantNumber })
+      const categoryCreated = await saveCategoryData({ ...decryptedData.categoryData, UMerchantNumber: decryptedData.UMerchantNumber })
+      req.io?.emit('category_updated', { category: categoryCreated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -157,7 +167,8 @@ export const ItemsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const categoryWmDbId = decryptedData.categoryData.wmDbId
-      await updateCategoryData(categoryWmDbId, { ...decryptedData.categoryData, updatedAt: new Date() })
+      const categoryUpdated = await updateCategoryData(categoryWmDbId, { ...decryptedData.categoryData, updatedAt: new Date() })
+      req.io?.emit('category_updated', { category: categoryUpdated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -172,7 +183,8 @@ export const ItemsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const categoryWmDbId = decryptedData.categoryData.wmDbId
-      await updateCategoryData(categoryWmDbId, { deleted: true, updatedAt: new Date() })
+      const categoryDeleted = await updateCategoryData(categoryWmDbId, { deleted: true, updatedAt: new Date() })
+      req.io?.emit('category_updated', { category: categoryDeleted, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {

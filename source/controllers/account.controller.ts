@@ -13,7 +13,7 @@ export const AccountController = {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const { accountData } = decryptedData
 
-      await updateAccountData(String(currentAccountData._id), {
+      const accountDataUpdated = await updateAccountData(String(currentAccountData._id), {
         updatedAt: new Date(),
         industry: accountData.industry,
         name: accountData.name?.trim().toUpperCase() || '',
@@ -21,6 +21,7 @@ export const AccountController = {
         DBAName: accountData.DBAName?.trim().toUpperCase() || '',
         UMerchantNumber: accountData.UMerchantNumber?.trim() || ''
       })
+      req.io?.emit('account_updated', { accountData: accountDataUpdated })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -37,7 +38,7 @@ export const AccountController = {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const { accountData } = decryptedData
 
-      await updateAccountData(String(currentAccountData._id), {
+      const accountDataUpdated = await updateAccountData(String(currentAccountData._id), {
         updatedAt: new Date(),
         address: {
           city: accountData?.city?.trim() || '',
@@ -46,6 +47,7 @@ export const AccountController = {
           zipCode: accountData?.zipCode?.trim() || ''
         }
       })
+      req.io?.emit('account_updated', { accountData: accountDataUpdated })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -62,10 +64,11 @@ export const AccountController = {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const { accountData } = decryptedData
 
-      await updateAccountData(String(currentAccountData._id), {
+      const accountDataUpdated = await updateAccountData(String(currentAccountData._id), {
         updatedAt: new Date(),
         profileImage: accountData.profileImage?.trim() || ''
       })
+      req.io?.emit('account_updated', { accountData: accountDataUpdated })
 
       return res.status(200).send({ success: true })
     } catch (error) {

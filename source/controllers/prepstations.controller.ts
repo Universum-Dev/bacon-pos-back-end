@@ -10,10 +10,11 @@ export const PrepStationsController = {
 
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
-      await savePrepStationData({
+      const prepStationCreated = await savePrepStationData({
         ...decryptedData.prepStationData,
         UMerchantNumber: decryptedData.UMerchantNumber
       })
+      req.io?.emit('prep_station_updated', { prepStation: prepStationCreated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -28,7 +29,8 @@ export const PrepStationsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const prepStationWmDbId = decryptedData.prepStationData.wmDbId
-      await updatePrepStationData(prepStationWmDbId, { ...decryptedData.prepStationData, updatedAt: new Date() })
+      const prepStationUpdated = await updatePrepStationData(prepStationWmDbId, { ...decryptedData.prepStationData, updatedAt: new Date() })
+      req.io?.emit('prep_station_updated', { prepStation: prepStationUpdated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -44,7 +46,8 @@ export const PrepStationsController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const prepStationWmDbId = decryptedData.prepStationData.wmDbId
-      await updatePrepStationData(prepStationWmDbId, { deleted: true, updatedAt: new Date() })
+      const prepStationDeleted = await updatePrepStationData(prepStationWmDbId, { deleted: true, updatedAt: new Date() })
+      req.io?.emit('prep_station_updated', { prepStation: prepStationDeleted, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {

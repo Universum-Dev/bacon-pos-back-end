@@ -10,7 +10,8 @@ export const TaxesController = {
 
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
-      await saveTaxData({ ...decryptedData.taxData, UMerchantNumber: decryptedData.UMerchantNumber })
+      const taxCreated = await saveTaxData({ ...decryptedData.taxData, UMerchantNumber: decryptedData.UMerchantNumber })
+      req.io?.emit('tax_updated', { tax: taxCreated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -25,7 +26,8 @@ export const TaxesController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const taxId = decryptedData.taxData.wmDbId
-      await updateTaxData(taxId, { ...decryptedData.taxData, updatedAt: new Date() })
+      const taxUpdated = await updateTaxData(taxId, { ...decryptedData.taxData, updatedAt: new Date() })
+      req.io?.emit('tax_updated', { tax: taxUpdated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -40,7 +42,8 @@ export const TaxesController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const taxId = decryptedData.taxData.wmDbId
-      await updateTaxData(taxId, { deleted: true, updatedAt: new Date() })
+      const taxDeleted = await updateTaxData(taxId, { deleted: true, updatedAt: new Date() })
+      req.io?.emit('tax_updated', { tax: taxDeleted, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {

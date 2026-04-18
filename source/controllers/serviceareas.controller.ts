@@ -10,10 +10,11 @@ export const ServiceAreasController = {
 
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
-      await saveServiceAreaData({
+      const serviceAreaCreated = await saveServiceAreaData({
         ...decryptedData.serviceAreaData,
         UMerchantNumber: decryptedData.UMerchantNumber
       })
+      req.io?.emit('service_area_updated', { serviceArea: serviceAreaCreated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -28,7 +29,8 @@ export const ServiceAreasController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const serviceAreaWmDbId = decryptedData.serviceAreaData.wmDbId
-      await updateServiceAreaData(serviceAreaWmDbId, { ...decryptedData.serviceAreaData, updatedAt: new Date() })
+      const serviceAreaUpdated = await updateServiceAreaData(serviceAreaWmDbId, { ...decryptedData.serviceAreaData, updatedAt: new Date() })
+      req.io?.emit('service_area_updated', { serviceArea: serviceAreaUpdated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -44,12 +46,14 @@ export const ServiceAreasController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const serviceAreaWmDbId = decryptedData.serviceAreaData.wmDbId
-      await updateServiceAreaData(serviceAreaWmDbId, { deleted: true, updatedAt: new Date() })
+      const serviceAreaDeleted = await updateServiceAreaData(serviceAreaWmDbId, { deleted: true, updatedAt: new Date() })
+      req.io?.emit('service_area_updated', { serviceArea: serviceAreaDeleted, UMerchantNumber: decryptedData.UMerchantNumber })
 
       const relatedTableMaps = await getTableMapsData({ serviceAreaId: serviceAreaWmDbId })
 
       for await (const tableMap of relatedTableMaps) {
-        await updateTableMapData(String(tableMap.wmDbId), { deleted: true, updatedAt: new Date() })
+        const tableMapDeleted = await updateTableMapData(String(tableMap.wmDbId), { deleted: true, updatedAt: new Date() })
+        req.io?.emit('table_map_updated', { tableMap: tableMapDeleted, UMerchantNumber: decryptedData.UMerchantNumber })
       }
 
       return res.status(200).send({ success: true })

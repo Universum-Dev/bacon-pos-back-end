@@ -12,7 +12,8 @@ export const SettingsController = {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const { settingsData, UMerchantNumber } = decryptedData
 
-      await updateSettingsData(UMerchantNumber, settingsData)
+      const settingsDataUpdated = await updateSettingsData(UMerchantNumber, settingsData)
+      req.io?.emit('settings_updated', { settingsData: settingsDataUpdated, UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {

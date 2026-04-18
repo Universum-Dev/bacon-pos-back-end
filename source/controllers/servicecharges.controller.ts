@@ -10,7 +10,8 @@ export const ServiceChargesController = {
 
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
-      await saveServiceChargeData({ ...decryptedData.serviceChargeData, UMerchantNumber: decryptedData.UMerchantNumber })
+      const serviceChargeCreated = await saveServiceChargeData({ ...decryptedData.serviceChargeData, UMerchantNumber: decryptedData.UMerchantNumber })
+      req.io?.emit('service_charge_updated', { serviceCharge: serviceChargeCreated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -25,7 +26,8 @@ export const ServiceChargesController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const serviceChargeId = decryptedData.serviceChargeData.wmDbId
-      await updateServiceChargeData(serviceChargeId, { ...decryptedData.serviceChargeData, updatedAt: new Date() })
+      const serviceChargeUpdated = await updateServiceChargeData(serviceChargeId, { ...decryptedData.serviceChargeData, updatedAt: new Date() })
+      req.io?.emit('service_charge_updated', { serviceCharge: serviceChargeUpdated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -40,7 +42,8 @@ export const ServiceChargesController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const serviceChargeId = decryptedData.serviceChargeData.wmDbId
-      await updateServiceChargeData(serviceChargeId, { deleted: true, updatedAt: new Date() })
+      const serviceChargeDeleted = await updateServiceChargeData(serviceChargeId, { deleted: true, updatedAt: new Date() })
+      req.io?.emit('service_charge_updated', { serviceCharge: serviceChargeDeleted, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {

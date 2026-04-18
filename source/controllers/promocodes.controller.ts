@@ -10,7 +10,8 @@ export const PromoCodesController = {
 
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
-      await savePromoCodeData({ ...decryptedData.promoCodeData, UMerchantNumber: decryptedData.UMerchantNumber })
+      const promoCodeCreated = await savePromoCodeData({ ...decryptedData.promoCodeData, UMerchantNumber: decryptedData.UMerchantNumber })
+      req.io?.emit('promo_code_updated', { promoCode: promoCodeCreated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -25,7 +26,8 @@ export const PromoCodesController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const promoCodeId = decryptedData.promoCodeData.wmDbId
-      await updatePromoCodeData(promoCodeId, { ...decryptedData.promoCodeData, updatedAt: new Date() })
+      const promoCodeUpdated = await updatePromoCodeData(promoCodeId, { ...decryptedData.promoCodeData, updatedAt: new Date() })
+      req.io?.emit('promo_code_updated', { promoCode: promoCodeUpdated, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
@@ -40,7 +42,8 @@ export const PromoCodesController = {
     try {
       const decryptedData = handleGetDataDecrypted(cipherText, iv)
       const promoCodeId = decryptedData.promoCodeData.wmDbId
-      await updatePromoCodeData(promoCodeId, { deleted: true, updatedAt: new Date() })
+      const promoCodeDeleted = await updatePromoCodeData(promoCodeId, { deleted: true, updatedAt: new Date() })
+      req.io?.emit('promo_code_updated', { promoCode: promoCodeDeleted, UMerchantNumber: decryptedData.UMerchantNumber })
 
       return res.status(200).send({ success: true })
     } catch (error) {
