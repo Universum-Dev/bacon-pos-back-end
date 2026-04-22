@@ -59,7 +59,7 @@ const OrderSchema = new Schema(
     tableId: { type: String, default: null },
     type: {
       type: String,
-      enum: ['Dine in', 'Take out', 'On hold', 'Delivery']
+      enum: ['Dine in', 'Take out', 'On hold', 'Delivery', 'Eat-in']
     },
     tableName: { type: String, default: null },
     deleted: { type: Boolean, default: false },
