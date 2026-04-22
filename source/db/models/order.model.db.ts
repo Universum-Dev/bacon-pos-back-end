@@ -47,6 +47,7 @@ const SendBatchSchema = new Schema(
 
 const OrderSchema = new Schema(
   {
+    type: { type: String },
     wmDbId: { type: String },
     items: [OrderItemSchema],
     startedAt: { type: String },
@@ -57,10 +58,6 @@ const OrderSchema = new Schema(
     total: { type: Number, default: 0 },
     subTotal: { type: Number, default: 0 },
     tableId: { type: String, default: null },
-    type: {
-      type: String,
-      enum: ['Dine in', 'Take out', 'On hold', 'Delivery', 'Eat-in']
-    },
     tableName: { type: String, default: null },
     deleted: { type: Boolean, default: false },
     customerName: { type: String, default: '' },
