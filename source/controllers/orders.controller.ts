@@ -52,6 +52,19 @@ export const OrdersController = {
       return res.status(500).send({ success: false, error })
     }
   },
+  deleteOrder: async (req: Request, res: Response) => {
+    console.log('--- DELETE ORDER ---')
+    const { orderData } = req.body
+
+    try {
+      const orderDataUpdated = await updateOrderData(orderData.wmDbId, { deleted: true })
+      req.io?.emit('order_updated', { order: orderDataUpdated })
+      return res.status(200).send({ success: true })
+    } catch (error) {
+      console.log('Error deleteOrder', error)
+      return res.status(500).send({ success: false, error })
+    }
+  },
   sendCreatedPayment: async (req: Request, res: Response) => {
     console.log('--- SEND CREATED PAYMENT ---')
     const { wmDbId, paymentWmDbId } = req.body
