@@ -27,9 +27,11 @@ import {
   getCategoriesData,
   getPrepStationsData,
   getServiceAreasData,
+  saveDiningOptionData,
   getDiningOptionsData,
   getServiceChargesData,
-  getSettingsDataBySearch
+  getSettingsDataBySearch,
+  getDiningOptionDataBySearch
 } from '../db/requests.db'
 
 export const handleFirstSync = async (decryptedData: any) => {
@@ -71,7 +73,7 @@ export const handleFirstSync = async (decryptedData: any) => {
         await saveAccountData(accountDataToSet)
       }
 
-      const currentSettingsData = await getSettingsDataBySearch({ terminalId: decryptedData.settingsData.id })
+      const currentSettingsData = await getSettingsDataBySearch({ UMerchantNumber })
 
       if (!currentSettingsData) {
         const settingsDataToSet = {
@@ -115,6 +117,28 @@ export const handleFirstSync = async (decryptedData: any) => {
         }
 
         await saveEmployeeData(employeeDataToSet)
+      }
+
+      for (const diningOptionData of decryptedData.diningOptionsData) {
+        const diningOptionDataInDb = await getDiningOptionDataBySearch({
+          wmDbId: diningOptionData.wmDbId
+        })
+
+        if (diningOptionDataInDb) {
+          continue
+        }
+
+        const diningOptionDataToSet = {
+          setAsDefault: true,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          name: diningOptionData.name,
+          wmDbId: diningOptionData.wmDbId,
+          behavior: diningOptionData.behavior,
+          UMerchantNumber: diningOptionData.UMerchantNumber
+        }
+
+        await saveDiningOptionData(diningOptionDataToSet)
       }
 
       const pinPadsDataParsed = JSON.parse(decryptedData.settingsData.pinPads)

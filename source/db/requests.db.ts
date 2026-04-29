@@ -132,6 +132,16 @@ export const getSettingsDataBySearch = async (queryToSearch: object) => {
   }
 }
 
+export const getDiningOptionDataBySearch = async (queryToSearch: object) => {
+  try {
+    const diningOptionData = await DiningOption.findOne(queryToSearch).lean().exec()
+    return diningOptionData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export const updateAccountData = async (accountId: string, dataToUpdate: object) => {
   try {
     const accountDataUpdated = await Account.findOneAndUpdate({ _id: new Types.ObjectId(accountId) }, { $set: dataToUpdate }, { new: true })

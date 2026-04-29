@@ -5,6 +5,7 @@ const DiningOptionSchema = new Schema(
     name: { type: String },
     wmDbId: { type: String },
     behavior: { type: String },
+    UMerchantNumber: { type: String },
     deleted: { type: Boolean, default: false },
     createdAt: { type: Date, default: new Date() },
     updatedAt: { type: Date, default: new Date() },

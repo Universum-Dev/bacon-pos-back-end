@@ -6,6 +6,7 @@ const SettingSchema = new Schema({
   terminalId: { type: String },
   posInterface: { type: String },
   UMerchantNumber: { type: String },
+  dualDisplayConfig: { type: String },
   isMainPOSTerminal: { type: Boolean },
   kitchenTicketConfig: { type: String },
   customerTicketConfig: { type: String },
