@@ -70,6 +70,9 @@ const OrderSchema = new Schema(
       enum: ['OPEN', 'SEND', 'CLOSED', 'PAID', 'HOLD', 'CANCELLED'],
       default: 'OPEN'
     },
+    deliveryStatus: { type: String, default: '' },
+    deliveryDriverId: { type: String, default: '' },
+    deliveryDriverName: { type: String, default: '' },
     totalServiceCharges: { type: Number, default: null },
     createdAt: { type: Date, default: () => new Date() },
     updatedAt: { type: Date, default: () => new Date() },

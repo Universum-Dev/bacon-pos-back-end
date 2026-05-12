@@ -12,6 +12,8 @@ const PinPadSchema = new Schema(
     tipOptions: Schema.Types.Mixed,
     enableTipping: { type: Boolean },
     UMerchantNumber: { type: String },
+    dualPricingEnabled: { type: Boolean },
+    cardFeePercentage: { type: Number },
     tippingTypesEnabled: Schema.Types.Mixed,
     deleted: { type: Boolean, default: false },
     createdAt: { type: Date, default: new Date() },
