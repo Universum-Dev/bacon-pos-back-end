@@ -1,6 +1,27 @@
 import { Types } from 'mongoose'
 
-import { Tax, Discount, PromoCode, Account, ModeSet, ServiceCharge, DiningOption, Order, Payment, Employee, Printer, PinPad, Setting, Category, PrepStation, AddOnSet, Item, ServiceArea, TableMap } from './models'
+import {
+  Tax,
+  Item,
+  Order,
+  PinPad,
+  Printer,
+  Payment,
+  Account,
+  ModeSet,
+  Setting,
+  Discount,
+  Customer,
+  Employee,
+  Category,
+  AddOnSet,
+  TableMap,
+  PromoCode,
+  ServiceArea,
+  PrepStation,
+  DiningOption,
+  ServiceCharge
+} from './models'
 
 export const getAccountsData = async () => {
   try {
@@ -96,6 +117,16 @@ export const getEmployeesData = async () => {
   try {
     const employeesData = await Employee.find({ deleted: false }).lean().exec()
     return employeesData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const getCustomersData = async () => {
+  try {
+    const customersData = await Customer.find({ deleted: false }).lean().exec()
+    return customersData
   } catch (error) {
     console.log(error)
     throw error
@@ -420,6 +451,17 @@ export const saveEmployeeData = async (employeeDataToSave: object) => {
   }
 }
 
+export const saveCustomerData = async (customerDataToSave: object) => {
+  try {
+    const newCustomerData = new Customer({ _id: new Types.ObjectId(), ...customerDataToSave })
+    const createdCustomer = await newCustomerData.save()
+    return createdCustomer.toObject()
+  } catch (error) {
+    console.log(error)
+    throw new Error(error as string)
+  }
+}
+
 export const savePrinterData = async (printerDataToSave: object) => {
   try {
     const newPrinterData = new Printer({ _id: new Types.ObjectId(), ...printerDataToSave })
@@ -535,6 +577,17 @@ export const updateEmployeeData = async (employeeId: string, dataToUpdate: objec
     const employeeDataUpdated = await Employee.findOneAndUpdate({ wmDbId: employeeId }, { $set: dataToUpdate }, { new: true }).lean().exec()
 
     return employeeDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const updateCustomerData = async (customerId: string, dataToUpdate: object) => {
+  try {
+    const customerDataUpdated = await Customer.findOneAndUpdate({ wmDbId: customerId }, { $set: dataToUpdate }, { new: true }).lean().exec()
+
+    return customerDataUpdated
   } catch (error) {
     console.log(error)
     throw error

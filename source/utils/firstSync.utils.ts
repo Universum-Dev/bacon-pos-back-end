@@ -22,6 +22,7 @@ import {
   getTableMapsData,
   saveEmployeeData,
   saveSettingsData,
+  getCustomersData,
   getEmployeesData,
   getPromoCodesData,
   getCategoriesData,
@@ -215,6 +216,7 @@ export const handleFirstSync = async (decryptedData: any) => {
       const modeSetsData = await getModeSetsData()
       const paymentsData = await getPaymentsData()
       const discountsData = await getDiscountsData()
+      const customersData = await getCustomersData()
       const employeesData = await getEmployeesData()
       const addOnSetsData = await getAddOnSetsData()
       const categoriesData = await getCategoriesData()
@@ -241,6 +243,7 @@ export const handleFirstSync = async (decryptedData: any) => {
           tableMapsData,
           addOnSetsData,
           employeesData,
+          customersData,
           categoriesData,
           promoCodesData,
           prepStationsData,
