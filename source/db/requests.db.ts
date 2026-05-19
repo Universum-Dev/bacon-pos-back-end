@@ -20,7 +20,8 @@ import {
   ServiceArea,
   PrepStation,
   DiningOption,
-  ServiceCharge
+  ServiceCharge,
+  TerminalDevice
 } from './models'
 
 export const getAccountsData = async () => {
@@ -157,6 +158,16 @@ export const getSettingsDataBySearch = async (queryToSearch: object) => {
   try {
     const settingsData = await Setting.findOne(queryToSearch).lean().exec()
     return settingsData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const getTerminalDeviceDataBySearch = async (queryToSearch: object) => {
+  try {
+    const terminalDeviceData = await TerminalDevice.findOne(queryToSearch).lean().exec()
+    return terminalDeviceData
   } catch (error) {
     console.log(error)
     throw error
@@ -390,6 +401,17 @@ export const saveSettingsData = async (settingsDataToSave: object) => {
     const newSettingsData = new Setting({ _id: new Types.ObjectId(), ...settingsDataToSave })
     const createdSettings = await newSettingsData.save()
     return createdSettings.toObject()
+  } catch (error) {
+    console.log(error)
+    throw new Error(error as string)
+  }
+}
+
+export const saveTerminalDeviceData = async (terminalDeviceDataToSave: object) => {
+  try {
+    const newTerminalDeviceData = new TerminalDevice({ _id: new Types.ObjectId(), ...terminalDeviceDataToSave })
+    const createdTerminalDevice = await newTerminalDeviceData.save()
+    return createdTerminalDevice.toObject()
   } catch (error) {
     console.log(error)
     throw new Error(error as string)

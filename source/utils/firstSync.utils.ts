@@ -31,8 +31,10 @@ import {
   saveDiningOptionData,
   getDiningOptionsData,
   getServiceChargesData,
+  saveTerminalDeviceData,
   getSettingsDataBySearch,
-  getDiningOptionDataBySearch
+  getDiningOptionDataBySearch,
+  getTerminalDeviceDataBySearch
 } from '../db/requests.db'
 
 export const handleFirstSync = async (decryptedData: any) => {
@@ -89,6 +91,21 @@ export const handleFirstSync = async (decryptedData: any) => {
         }
 
         await saveSettingsData(settingsDataToSet)
+      }
+
+      const terminalDeviceData = await getTerminalDeviceDataBySearch({ uniqueId: decryptedData.settingsData.uniqueId })
+
+      if (!terminalDeviceData) {
+        const terminalDeviceDataToSet = {
+          UMerchantNumber,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          deviceId: decryptedData.settingsData.deviceId,
+          uniqueId: decryptedData.settingsData.uniqueId,
+          manufacturer: decryptedData.settingsData.manufacturer
+        }
+
+        await saveTerminalDeviceData(terminalDeviceDataToSet)
       }
 
       for (const employeeData of decryptedData.employeesData) {
@@ -206,6 +223,21 @@ export const handleFirstSync = async (decryptedData: any) => {
 
       if (!accountsDataCreated) {
         return { success: false, message: 'No account data found. Please complete the initial system setup first.' }
+      }
+
+      const terminalDeviceData = await getTerminalDeviceDataBySearch({ uniqueId: decryptedData.uniqueId })
+
+      if (!terminalDeviceData) {
+        const terminalDeviceDataToSet = {
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          deviceId: decryptedData.deviceId,
+          uniqueId: decryptedData.uniqueId,
+          manufacturer: decryptedData.manufacturer,
+          UMerchantNumber: accountsDataCreated.UMerchantNumber
+        }
+
+        await saveTerminalDeviceData(terminalDeviceDataToSet)
       }
 
       const itemsData = await getItemsData()

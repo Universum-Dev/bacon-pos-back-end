@@ -5,6 +5,7 @@ const ModeSetSchema = new Schema({
   wmDbId: { type: String },
   options: Schema.Types.Mixed,
   UMerchantNumber: { type: String },
+  isCombo: { type: Boolean, default: false },
   deleted: { type: Boolean, default: false },
   createdAt: { type: Date, default: new Date() },
   updatedAt: { type: Date, default: new Date() },
