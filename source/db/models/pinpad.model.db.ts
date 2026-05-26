@@ -1,3 +1,4 @@
+import { off } from 'cluster'
 import { Schema, model } from 'mongoose'
 
 const PinPadSchema = new Schema(
@@ -12,12 +13,13 @@ const PinPadSchema = new Schema(
     tipOptions: Schema.Types.Mixed,
     enableTipping: { type: Boolean },
     UMerchantNumber: { type: String },
-    dualPricingEnabled: { type: Boolean },
     cardFeePercentage: { type: Number },
+    dualPricingEnabled: { type: Boolean },
     tippingTypesEnabled: Schema.Types.Mixed,
     deleted: { type: Boolean, default: false },
     createdAt: { type: Date, default: new Date() },
-    updatedAt: { type: Date, default: new Date() }
+    updatedAt: { type: Date, default: new Date() },
+    assignedTo: { type: Array, of: String, default: [] }
   },
   { timestamps: true }
 )

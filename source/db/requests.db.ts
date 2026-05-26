@@ -134,6 +134,16 @@ export const getCustomersData = async () => {
   }
 }
 
+export const getTerminalDevicesData = async () => {
+  try {
+    const terminalDevicesData = await TerminalDevice.find({ deleted: false }).lean().exec()
+    return terminalDevicesData
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export const getPaymentData = async (queryToSearch: object) => {
   try {
     const paymentData = await Payment.findOne(queryToSearch).lean().exec()
@@ -742,6 +752,17 @@ export const updateSettingsData = async (UMerchantNumber: string, dataToUpdate: 
     const settingsDataUpdated = await Setting.findOneAndUpdate({ UMerchantNumber }, { $set: dataToUpdate }, { new: true }).lean().exec()
 
     return settingsDataUpdated
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const updateTerminalDeviceData = async (serialNumber: string, dataToUpdate: object) => {
+  try {
+    const terminalDeviceDataUpdated = await TerminalDevice.findOneAndUpdate({ serialNumber }, { $set: dataToUpdate }, { new: true }).lean().exec()
+
+    return terminalDeviceDataUpdated
   } catch (error) {
     console.log(error)
     throw error

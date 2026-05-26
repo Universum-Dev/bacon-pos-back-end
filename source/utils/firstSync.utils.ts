@@ -31,6 +31,7 @@ import {
   saveDiningOptionData,
   getDiningOptionsData,
   getServiceChargesData,
+  getTerminalDevicesData,
   saveTerminalDeviceData,
   getSettingsDataBySearch,
   getDiningOptionDataBySearch,
@@ -100,9 +101,8 @@ export const handleFirstSync = async (decryptedData: any) => {
           UMerchantNumber,
           createdAt: new Date(),
           updatedAt: new Date(),
-          deviceId: decryptedData.settingsData.deviceId,
-          uniqueId: decryptedData.settingsData.uniqueId,
-          manufacturer: decryptedData.settingsData.manufacturer
+          deviceName: decryptedData.settingsData.deviceName,
+          serialNumber: decryptedData.settingsData.serialNumber
         }
 
         await saveTerminalDeviceData(terminalDeviceDataToSet)
@@ -186,6 +186,7 @@ export const handleFirstSync = async (decryptedData: any) => {
           tipOptions: pinPadData.tipOptions,
           merchantKey: pinPadData.merchantKey,
           tippingTypesEnabled: tippingTypesToSet,
+          assignedTo: pinPadData.assignedTo || [],
           terminalId: decryptedData.settingsData.id,
           enableTipping: pinPadData.enableTipping === 1
         }
@@ -225,15 +226,14 @@ export const handleFirstSync = async (decryptedData: any) => {
         return { success: false, message: 'No account data found. Please complete the initial system setup first.' }
       }
 
-      const terminalDeviceData = await getTerminalDeviceDataBySearch({ uniqueId: decryptedData.uniqueId })
+      const terminalDeviceData = await getTerminalDeviceDataBySearch({ serialNumber: decryptedData.serialNumber })
 
       if (!terminalDeviceData) {
         const terminalDeviceDataToSet = {
           createdAt: new Date(),
           updatedAt: new Date(),
-          deviceId: decryptedData.deviceId,
-          uniqueId: decryptedData.uniqueId,
-          manufacturer: decryptedData.manufacturer,
+          deviceName: decryptedData.deviceName,
+          serialNumber: decryptedData.serialNumber,
           UMerchantNumber: accountsDataCreated.UMerchantNumber
         }
 
@@ -258,6 +258,7 @@ export const handleFirstSync = async (decryptedData: any) => {
       const [currentSettingsData] = await getSettingsData()
       const diningOptionsData = await getDiningOptionsData()
       const serviceChargesData = await getServiceChargesData()
+      const terminalDevicesData = await getTerminalDevicesData()
       const tableMapsData = await getTableMapsData({ deleted: false })
 
       console.log('Additional system setup completed. Updating settings data if needed.')
@@ -282,6 +283,7 @@ export const handleFirstSync = async (decryptedData: any) => {
           serviceAreasData,
           diningOptionsData,
           serviceChargesData,
+          terminalDevicesData,
           accountData: accountsDataCreated,
           settingsData: currentSettingsData
         }
